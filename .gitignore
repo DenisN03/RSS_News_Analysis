@@ -1,0 +1,6 @@
+.idea/
+
+airflow/dags/__pycache__/
+airflow/logs/
+
+debug.py
