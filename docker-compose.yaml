@@ -50,7 +50,7 @@ x-airflow-common:
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:- feedparser==6.0.10 psycopg2==2.7.7 psycopg2-binary==2.8.6 nltk==3.6.7 gensim==4.2.0 levenshtein==0.20.8}
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:- feedparser==6.0.10 psycopg2==2.7.7 psycopg2-binary==2.8.6 nltk==3.6.7 gensim==4.2.0 levenshtein==0.20.8 natasha==1.4.0}
   volumes:
     - ./airflow/dags:/opt/airflow/dags
     - ./airflow/logs:/opt/airflow/logs

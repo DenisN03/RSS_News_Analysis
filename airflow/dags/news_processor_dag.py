@@ -12,7 +12,7 @@ from airflow.operators.python_operator import PythonOperator
 
 # A DAG represents a workflow, a collection of tasks
 with DAG(dag_id="news_processor_dag", start_date=datetime(2022, 12, 19), catchup=False,
-         schedule_interval="0 0/2 * * *") as dag:
+         schedule_interval="0 0/8 * * *") as dag:
 
     # Create tasks list for loading news
     urls_dict = eval(Variable.get("urls_dict"))

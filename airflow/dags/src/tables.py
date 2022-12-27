@@ -6,7 +6,8 @@ from datetime import datetime
 from airflow.models import Variable
 
 from src.download_data import get_conn_credentials
-from src.classification import create_similarity_algorithm, create_stemmer, compute_category_similarity
+from src.classification import create_similarity_algorithm, create_stemmer, compute_category_similarity, \
+    prepare_lemmator, perform_lemmatization
 
 
 def create_source_table(**kwargs):
@@ -154,13 +155,18 @@ def create_category_table(**kwargs):
     # Создание алгоритмов обработки слов
     algorithm = create_similarity_algorithm()
     stemmer = create_stemmer()
+    segmenter, morph_vocab, morph_tagger = prepare_lemmator()
+
+    # Лемматизация списка категорий
+    categories_lemma = [[x[0], perform_lemmatization(x[1], segmenter, morph_vocab, morph_tagger)] for x in categories]
 
     for source_category in source_categories:
 
-        category_similarity = compute_category_similarity(source_category, categories, algorithm, stemmer)
+        category_similarity = compute_category_similarity(source_category, categories_lemma, algorithm, stemmer,
+                                                          segmenter, morph_vocab, morph_tagger)
 
         # Если ни одна категория не подходит, то выбираем категорию "Другое"
-        if np.sum([x for x in category_similarity.values()]) == 0:
+        if np.sum([x for x in category_similarity.values()]) == 0 or max(category_similarity.values())[0] < 0.3:
             categories_names = [x[1] for x in categories]
             category_id = categories_names.index('Другое') + 1
 
