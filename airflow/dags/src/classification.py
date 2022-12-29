@@ -16,8 +16,12 @@ from natasha import (
     Doc
 )
 
+
+def get_similarity_algorithm_path():
+    return gensim.downloader.load('word2vec-ruscorpora-300', return_path=True)
+
 def create_similarity_algorithm():
-    return gensim.downloader.load('word2vec-ruscorpora-300')
+    return gensim.downloader.load('word2vec-ruscorpora-300', return_path=False)
 
 def compute_similarity(algorithm, word_1, word_2):
     return algorithm.similarity(f'{word_1}_NOUN', f'{word_2}_NOUN')

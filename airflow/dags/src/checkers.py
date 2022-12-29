@@ -135,9 +135,6 @@ def check_source_exist():
     conn_id = Variable.get("conn_id")
     conn_to_airflow = get_conn_credentials(conn_id)
 
-    field = "fc.FileFormat"
-    check_status = False
-
     pg_hostname, pg_port, pg_username, pg_pass, pg_db = conn_to_airflow.host, conn_to_airflow.port, \
         conn_to_airflow.login, conn_to_airflow.password, \
         conn_to_airflow.schema
