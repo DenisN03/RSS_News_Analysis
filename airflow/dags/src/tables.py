@@ -4,10 +4,9 @@ import feedparser
 import numpy as np
 from datetime import datetime
 from airflow.models import Variable
-from gensim.models import KeyedVectors
 
 from src.download_data import get_conn_credentials
-from src.classification import create_similarity_algorithm, get_similarity_algorithm_path,\
+from src.classification import create_similarity_algorithm,\
     create_stemmer, compute_category_similarity, \
     prepare_lemmator, perform_lemmatization
 
@@ -155,13 +154,7 @@ def create_category_table(**kwargs):
                    f"ON DELETE CASCADE)")
 
     # Создание алгоритмов обработки слов
-    algorithm_path = get_similarity_algorithm_path()
-    file_exists = os.path.exists(algorithm_path)
-
-    if file_exists:
-        algorithm = KeyedVectors.load_word2vec_format(algorithm_path, binary=True)
-    else:
-        algorithm = create_similarity_algorithm()
+    algorithm = create_similarity_algorithm()
 
     stemmer = create_stemmer()
     segmenter, morph_vocab, morph_tagger = prepare_lemmator()

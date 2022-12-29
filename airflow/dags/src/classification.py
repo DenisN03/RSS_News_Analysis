@@ -1,6 +1,8 @@
+import os
 import numpy as np
 import gensim.downloader
 from Levenshtein import distance
+from gensim.models import KeyedVectors
 
 import nltk
 nltk.download('punkt', quiet=True)
@@ -17,11 +19,15 @@ from natasha import (
 )
 
 
-def get_similarity_algorithm_path():
+def _get_similarity_algorithm_path():
     return gensim.downloader.load('word2vec-ruscorpora-300', return_path=True)
 
 def create_similarity_algorithm():
-    return gensim.downloader.load('word2vec-ruscorpora-300', return_path=False)
+    algorithm_path = _get_similarity_algorithm_path()
+    if os.path.exists(algorithm_path):
+        return KeyedVectors.load_word2vec_format(algorithm_path, binary=True)
+    else:
+        return gensim.downloader.load('word2vec-ruscorpora-300', return_path=False)
 
 def compute_similarity(algorithm, word_1, word_2):
     return algorithm.similarity(f'{word_1}_NOUN', f'{word_2}_NOUN')
